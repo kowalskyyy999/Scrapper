@@ -174,11 +174,11 @@ def get_all_products(conn):
 def main():
 
     conn = psycopg2.connect(**{
-            'database': 'metadata_db',
-            'user': 'metadata_user',
-            'password': 'password123',
-            'host': 'localhost',
-            'port': '5433'
+            'database': 'xxxxx',
+            'user': 'xxxxx',
+            'password': 'xxxxx',
+            'host': 'xxxxx',
+            'port': 'xxxxx'
             })
     
     try:
