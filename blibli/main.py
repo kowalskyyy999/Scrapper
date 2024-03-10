@@ -69,7 +69,7 @@ def get_products(conn):
             if offset is None:
                 offset = 0
             offset = int(offset)
-            
+
     except Exception as e:
         offset = 0
 
@@ -84,7 +84,7 @@ def get_products(conn):
     for result in results:
         sub_cat_code = result[4]
 
-        print(f"BukaLapak Scrape => {result[5]} - Last Offset => {offset}")
+        print(f"Blibli Scrape => {result[5]} - Last Offset => {offset}")
 
         for i in tqdm(range(0, 51), total=50, desc="Page"):
             base_url = f"https://www.blibli.com/backend/search/products?category={sub_cat_code}&start={i * 40}&channelId=web&isMobileBCA=false&showFacet=false"
@@ -148,11 +148,11 @@ def get_products(conn):
 def main():
 
     conn = psycopg2.connect(**{
-            'database': 'metadata_db',
-            'user': 'metadata_user',
-            'password': 'password123',
-            'host': 'localhost',
-            'port': '5433'
+            'database': 'xxxxx',
+            'user': 'xxxxx',
+            'password': 'xxxxx',
+            'host': 'xxxxx',
+            'port': 'xxxxx'
             })
     
     try:
@@ -160,10 +160,10 @@ def main():
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS categories_blibli (
-                    cat_id VARCHAR NOT NULL PRIMARY_KEY,
+                    cat_id VARCHAR NOT NULL,
                     cat_code VARCHAR NOT NULL,
                     cat_name VARCHAR NOT NULL,
-                    sub_cat_id VARCHAR NOT NULL,
+                    sub_cat_id VARCHAR NOT NULL PRIMARY KEY,
                     sub_cat_code VARCHAR NOT NULL,
                     sub_cat_name VARCHAR NOT NULL,
                     cat_redirect_url VARCHAR NOT NULL,
