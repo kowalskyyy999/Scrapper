@@ -80,11 +80,23 @@ def get_products(conn):
                     group by cat_id , cat_code , cat_name , sub_cat_id , sub_cat_code , sub_cat_name , cat_redirect_url , sub_cat_redirect_url 
                     offset {offset}""")
         results = cur.fetchall()
+    conn.commit()
+    conn.rollback()
     
     for result in results:
         sub_cat_code = result[4]
 
         print(f"Blibli Scrape => {result[5]} - Last Offset => {offset}")
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "insert into metadata_blibli (latest_offset) values (%s)",
+                    (offset,))
+            conn.commit()
+            conn.rollback()
+        except Exception as e:
+            print(f"Error => {e}")
 
         for i in tqdm(range(0, 51), total=50, desc="Page"):
             base_url = f"https://www.blibli.com/backend/search/products?category={sub_cat_code}&start={i * 40}&channelId=web&isMobileBCA=false&showFacet=false"
@@ -133,16 +145,6 @@ def get_products(conn):
             else:
                 break
         
-        try:
-            with conn.cursor() as cur:
-                cur.execute(
-                    "insert into metadata_blibli values (%s)",
-                    (offset))
-            conn.commit()
-            conn.rollback()
-        except Exception as e:
-            print(f"Error => {e}")
-
         offset += 1
 
 def main():
@@ -151,8 +153,8 @@ def main():
             'database': 'xxxxxxx',
             'user': 'xxxxxxx',
             'password': 'xxxxxxx',
-            'host': 'xxxxxxxxx',
-            'port': 'xxxxxx'
+            'host': 'xxxxxxx',
+            'port': 'xxxxxxx'
             })
     
     try:
@@ -184,8 +186,7 @@ def main():
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS metadata_blibli (
-                    id SERIAL PRIMARY KEY,
-                    latest_offset BIGINT
+                    latest_offset VARCHAR NOT NULL
                 )""")
             
         conn.commit()

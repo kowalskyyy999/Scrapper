@@ -139,6 +139,16 @@ def search_all_product(conn=None):
 
         print(f"Scrape => {product[2]} {response} - Last Offset => {offset}")
 
+        try:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "insert into metadata_tokopedia(latest_offset) values (%s)",
+                    (offset,))
+            conn.commit()
+            conn.rollback()
+        except Exception as e:
+            print(f"Error => {e}")
+
         if response.status_code == 200:
             data = response.json()
 
@@ -189,8 +199,8 @@ def main():
             'database': 'xxxxxxx',
             'user': 'xxxxxxx',
             'password': 'xxxxxxx',
-            'host': 'xxxxxxxxx',
-            'port': 'xxxxxx'
+            'host': 'xxxxxxx',
+            'port': 'xxxxxxx'
             })
     
     try:
@@ -235,8 +245,7 @@ def main():
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS metadata_tokopedia (
-                    id SERIAL PRIMARY KEY,
-                    latest_offset BIGINT
+                    latest_offset VARCHAR
                 )""")
             
         conn.commit()

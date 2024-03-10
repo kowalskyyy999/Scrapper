@@ -110,6 +110,16 @@ def get_all_products(conn):
 
         print(f"BukaLapak Scrape => {result[4]} - Last Offset => {offset}")
 
+        try:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "insert into metadata_bukalapak(latest_offset) values (%s)",
+                    (offset,))
+            conn.commit()
+            conn.rollback()
+        except Exception as e:
+            print(f"Error => {e}")
+
         for page in tqdm(range(1, 100), total=100, desc="Page"):
             access_token = get_access_token()
 
@@ -157,16 +167,6 @@ def get_all_products(conn):
                         print("Error => ",  {e})
             else:
                 break
-
-        try:
-            with conn.cursor() as cur:
-                cur.execute(
-                    "insert into metadata_bukalapak values (%s)",
-                    (offset))
-            conn.commit()
-            conn.rollback()
-        except Exception as e:
-            print(f"Error => {e}")
         
         offset += 1
 
@@ -177,8 +177,8 @@ def main():
             'database': 'xxxxxxx',
             'user': 'xxxxxxx',
             'password': 'xxxxxxx',
-            'host': 'xxxxxxxxx',
-            'port': 'xxxxxx'
+            'host': 'xxxxxxx',
+            'port': 'xxxxxxx'
             })
 
     try:
@@ -212,8 +212,7 @@ def main():
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS metadata_bukalapak (
-                    id SERIAL PRIMARY KEY,
-                    latest_offset BIGINT
+                    latest_offset VARCHAR NOT NULL
                 )""")
             
         conn.commit()
