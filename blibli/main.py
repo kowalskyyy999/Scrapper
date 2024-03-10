@@ -69,7 +69,7 @@ def get_products(conn):
             if offset is None:
                 offset = 0
             offset = int(offset)
-
+            
     except Exception as e:
         offset = 0
 
@@ -148,11 +148,11 @@ def get_products(conn):
 def main():
 
     conn = psycopg2.connect(**{
-            'database': 'xxxxx',
-            'user': 'xxxxx',
-            'password': 'xxxxx',
-            'host': 'xxxxx',
-            'port': 'xxxxx'
+            'database': 'xxxxxxx',
+            'user': 'xxxxxxx',
+            'password': 'xxxxxxx',
+            'host': 'xxxxxxxxx',
+            'port': 'xxxxxx'
             })
     
     try:

@@ -6,8 +6,10 @@ WORKDIR /app
 
 ADD . .
 
-RUN pip install --upgrade pip && \
-    pip install RUN pip install psycopg2-binary && \
-    pip install -r requirements.txt
+RUN pip install --upgrade pip
+
+RUN pip install psycopg2-binary
+
+RUN pip install -r requirements.txt
 
 CMD [ "python", "./main.py" ]
