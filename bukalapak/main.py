@@ -174,13 +174,13 @@ def get_all_products(conn):
 def main():
 
     conn = psycopg2.connect(**{
-            'database': 'xxxxx',
-            'user': 'xxxxx',
-            'password': 'xxxxx',
-            'host': 'xxxxx',
-            'port': 'xxxxx'
+            'database': 'xxxxxxx',
+            'user': 'xxxxxxx',
+            'password': 'xxxxxxx',
+            'host': 'xxxxxxxxx',
+            'port': 'xxxxxx'
             })
-    
+
     try:
         with conn.cursor() as cur:
             cur.execute(
