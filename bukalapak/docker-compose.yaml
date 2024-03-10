@@ -1,0 +1,17 @@
+version: '3.7'
+
+networks:
+  scraper-net:
+    driver: bridge
+    external: true
+
+services:
+  bukalapak-scraper:
+    image: bukalapak-scraper:1.0.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: bukalapak-scraper
+    restart: always
+    networks:
+      - scraper-net

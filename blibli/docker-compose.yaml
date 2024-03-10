@@ -1,0 +1,17 @@
+version: '3.7'
+
+networks:
+  scraper-net:
+    driver: bridge
+    external: true
+
+services:
+  blibli-scraper:
+    image: blibli-scraper:1.0.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: blibli-scraper
+    restart: always
+    networks:
+      - scraper-net
