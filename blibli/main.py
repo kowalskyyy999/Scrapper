@@ -60,6 +60,9 @@ def get_categories(conn):
                 conn.rollback()
             except Exception as e:
                 print(f"Error => {e}")
+            finally:
+                conn.commit()
+                conn.rollback()
 
 def get_products(conn):
     try:
@@ -150,13 +153,13 @@ def get_products(conn):
 def main():
 
     conn = psycopg2.connect(**{
-            'database': 'xxxxxxx',
-            'user': 'xxxxxxx',
-            'password': 'xxxxxxx',
-            'host': 'xxxxxxx',
-            'port': 'xxxxxxx'
+            'database': 'xxxxxxxxxx',
+            'user': 'xxxxxxxxxx',
+            'password': 'xxxxxxxxxx',
+            'host': 'xxxxxxxxxx',
+            'port': 'xxxxxxxxxx'
             })
-    
+ 
     try:
         with conn.cursor() as cur:
             cur.execute(
