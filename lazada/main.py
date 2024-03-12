@@ -78,25 +78,28 @@ def get_categories(conn=None):
 
     
     response = requests.get(base_url, headers=headers, cookies=cookies)
-    
-    for category in response.json()['data']['resultValue']['categoriesLpMultiFloor']['data']:
-        cat_name = category['categoryName']
-        cat_id = category['id']
-        for sub_category in category['level2TabList']:
-            sub_cat_id = sub_category['categoryId']
-            sub_cat_name = sub_category['categoryName']
-            sub_cat_url = sub_category['categoryUrl'][2:]
+    try:
 
-            try:
-                with conn.cursor() as cur:
-                    cur.execute(
-                        "insert into categories_lazada values (%s, %s, %s, %s, %s)",
-                        (cat_id, cat_name, sub_cat_id, sub_cat_name, sub_cat_url)
-                    )
-                conn.commit()
-                conn.rollback()
-            except Exception as e:
-                print(f"Error => {e}")
+        for category in response.json()['data']['resultValue']['categoriesLpMultiFloor']['data']:
+            cat_name = category['categoryName']
+            cat_id = category['id']
+            for sub_category in category['level2TabList']:
+                sub_cat_id = sub_category['categoryId']
+                sub_cat_name = sub_category['categoryName']
+                sub_cat_url = sub_category['categoryUrl'][2:]
+
+                try:
+                    with conn.cursor() as cur:
+                        cur.execute(
+                            "insert into categories_lazada values (%s, %s, %s, %s, %s)",
+                            (cat_id, cat_name, sub_cat_id, sub_cat_name, sub_cat_url)
+                        )
+                    conn.commit()
+                    conn.rollback()
+                except Exception as e:
+                    print(f"Error => {e}")
+    except Exception as e:
+        print(f"Error => {e}")
 
 def get_products(conn=None):
 
@@ -216,14 +219,15 @@ def get_products(conn=None):
         offset += 1
 
 def main():
+
     conn = psycopg2.connect(**{
             'database': 'xxxxxxxxxx',
-            'user': 'xxxxxxx',
-            'password': 'xxxxxxxxx',
-            'host': 'xxxxxxxxx',
-            'port': 'xxxxxxx'
+            'user': 'xxxxxxxxxx',
+            'password': 'xxxxxxxxxx',
+            'host': 'xxxxxxxxxx',
+            'port': 'xxxxxxxxxx'
             })
-    
+
     try:
         with conn.cursor() as cur:
             cur.execute(
